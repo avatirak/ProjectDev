@@ -1,0 +1,287 @@
+#include "Audio_App.h"
+#include "Audio_Driver.h"
+
+/*
+#define POI_VM0		00
+#define PU_VM1		01
+#define WAKEUP_VM2		02
+#define Company_VM3		03
+#define Background_VM4		04
+#define SETTING_STATE_VM5		05
+#define REPEAT_STATE_VM6		06
+#define MAIN_MANU_VM7		07
+#define PWR_PRESENT_0_VM8		08
+#define PWR_PRESENT_1_VM9		09
+#define PWR_PRESENT_2_VM10		10
+#define PWR_PRESENT_3_VM11		11
+#define FAULT_ST_0_VM12		12
+#define FAULT_ST_1_VM13		13
+#define FAULT_ST_2_VM14		14
+#define SET_TIMER_1_VM15		15
+#define SET_TIMER_2_VM16		16
+#define SET_TIMER_3_VM17		17
+#define TIMER_4_VM18		18
+#define ON_AFTER_TIMER_1_VM19		19
+#define ON_AFTER_TIMER_2_VM20		20
+#define ON_AFTER_TIMER_3_VM21		21
+#define ADVANCE_SETTING_1_VM22		22
+#define ADVANCE_SETTING_2_VM23		23
+#define ADVANCE_SETTING_3_VM24		24
+#define ADVANCE_SETTING_4_VM25		25
+#define ADVANCE_SETTING_5_VM26		26
+#define ADVANCE_SETTING_6_VM27		27
+#define ADVANCE_SETTING_7_VM28		28
+#define ADVANCE_SETTING_8_VM29		29
+#define SELECT_OPTION_VM30		30
+#define MOTOR_ON_STATE_0_VM31		31
+#define MOTOR_ON_STATE_1_VM32		32
+#define MOTOR_ON_STATE_2_VM33		33
+#define TIMER_BASED_MOTOR_ON_0_VM34		34
+#define TIMER_BASED_MOTOR_ON_1_VM35		35
+#define TIMER_BASED_MOTOR_ON_2_VM36		36
+#define PLEASE_WAIT_VM37		37
+#define WRONG_OPTION_VM38		38
+#define PRESS_PASSWARD_VM39		39
+#define PASSWARD_WRONG_VM40		40
+#define PASSWORD_TRY_AGAIN_VM41		41
+#define HOURS_ENTRY_VM42		42
+#define WRONG_TIME_ENTRY_VM43		43
+#define ENTERED_TIMER_VALUE_VM44		44
+#define DHHANYAWAD_VM45		45
+#define MOBILE_NUMBER_ENTRY_VM46		46
+#define ENTERED_MOBILE_NUMBER_VM47		47
+#define IF_CORRECT_VM48		48
+#define ENTERED_PASSWARED_VM49		49
+#define MOTOR_WILL_ON_TIMER_VM50		50
+#define MOTOR_WILL_ON_VM51		51
+#define MOTOR_WILL_OFF_VM52		52
+#define daydream_VP53		53
+#define KUCHH_KHAAS1_VP54		54
+#define One_VP55		55
+#define Two_VP56		56
+#define Three_VP57		57
+#define Four_VP58		58
+#define Five_VP59		59
+#define Six_VP60		60
+#define Seven_VP61		61
+#define Eight_VP62		62
+#define Nine_VP63		63
+#define Zero_VP64		64
+#define aahe_VP65		65
+#define Aalya_VP66		66
+#define Aayaknya_VP67		67
+#define amanya_VP68		68
+#define asalayas_VP69		69
+#define Badalnayas_VP70		70
+#define balance_VP71		71
+#define Band_VP72		72
+#define Barobar_VP73		73
+#define Call_VP74		74
+#define Chukicha_VP75		75
+#define daba_VP76		76
+#define dayya_VP77		77
+#define Denya_VP78		78
+#define dhhanyawad_VP79		79
+#define Entry_VP80		80
+#define Hoil_VP81		81
+#define Ichuk_VP82		82
+#define kahi_VP83		83
+#define kara_VP84		84
+#define Karnyas_VP85		85
+#define krupaya_VP86		86
+#define Menu_VP87		87
+#define Minutachi_VP88		88
+#define minute_VP89		89
+#define Mobile_VP90		90
+#define Motor_VP91		91
+#define Mukya_VP92		92
+#define nahi_VP93		93
+#define Nantar_VP94		94
+#define ne_VP95		95
+#define Niwada_VP96		96
+#define Number_VP97		97
+#define Paise_VP98		98
+#define paryay_VP99		99
+#define Paryaya_niwadala_VP100		100
+#define Passward_VP101		101
+#define pratishakara_VP102		102
+#define Punha_VP103		103
+#define Purnaak_VP104		104
+#define Replay_VP105		105
+#define Ruppay_VP106		106
+#define Sathi_VP107		107
+#define setting_VP108		108
+#define Silak_VP109		109
+#define Silak1_VP110		110
+#define sms_VP111		111
+#define SURU_VP112		112
+#define tas_VP113		113
+#define Tasa_VP114		114
+#define tasachi_VP115		115
+#define Thewannya_VP116		116
+#define Timer_VP117		117
+#define Tumcha_VP118		118
+#define Tumi_VP119		119
+#define vela_VP120		120
+#define Vidhut_VP121		121
+#define Vilane_VP122		122
+*/
+#include <stdio.h>
+#include "lcd_Driver.h"
+uint8_t data_Print=0;
+char gsp[15] = "SPI:";  
+
+#define MICRO_MAX_NO   122
+#define VM_MAX_NO 55
+#define VP_MAX_NO 64
+
+uint8_t gdata_to_play10[]={64,55,56,57,58,59,60,61,62,63,0x0};
+uint8_t Zero_VP[]={64,0x0};
+uint8_t One_VP[]={55,0x0};
+uint8_t Two_VP[]={56,0x0};
+uint8_t Three_VP[]={57,0x0};
+uint8_t Four_VP[]={58,0x0};
+uint8_t Five_VP[]={59,0x0};
+uint8_t Six_VP[]={60,0x0};
+uint8_t Seven_VP[]={61,0x0};
+uint8_t Eight_VP[]={62,0x0};
+uint8_t Nine_VP[]={63,0x0};
+
+uint8_t * gplay_data_ref[]={    Zero_VP, 
+                                One_VP,
+                                Two_VP,
+                                Three_VP,
+                                Four_VP,
+                                Five_VP,
+                                Six_VP,
+                                Seven_VP,
+                                Eight_VP,
+                                Nine_VP,
+                                gdata_to_play10,
+                            }; 
+                        
+uint8_t * pdata_to_play;
+uint8_t lsdata_to_play=0;
+
+
+
+/**
+  * @brief  Take input from appliction layer to play specific voice as per apllication manu
+  * @param  take index of specific voice menu
+  * @return None.
+  * @note   
+  */
+
+void PlayAudioOnGsm(uint8_t laudio_index)
+{
+	if( VM_MAX_NO >= laudio_index )
+	{
+		lsdata_to_play = laudio_index;
+		VoicePlayOnGsm(1);
+	}	
+	else if( laudio_index <= VP_MAX_NO )
+	{
+		laudio_index=laudio_index-VM_MAX_NO;
+    pdata_to_play=gplay_data_ref[laudio_index];	
+		lsdata_to_play=0;	
+		VoicePlayOnGsm(1);
+	}
+	
+}
+
+
+/**
+  * @brief  Stack of Audio IC, mentain audio ic in proper state to play voice if need
+  * @param  set lsts_change 1 if new command is to play or set 0 to process audio IC static
+  * @return None.
+  * @note   To play voice this function call contious at approoriate location
+  */
+
+void VoicePlayOnGsm(uint8_t lsts_change)
+{
+	static uint8_t lsvoice_play_state=3;
+	uint8_t lvm_fd=0;
+	
+	if(lsts_change==1)
+		lsvoice_play_state=0;
+
+	switch(lsvoice_play_state)
+	{
+		
+		case 0:
+			PlayAudioFeedback(PLAYING_STARTED);
+			AudioIcSpiCmd(POWER_UP);
+			AudioIcSpiCmd(STOP);
+			lsvoice_play_state++;
+			break;
+		
+		case 1:
+			if(lsdata_to_play != 0)
+			{
+				if(ReadStatusAudioIc())
+				{	
+					AudioIcSpiCmd(POWER_UP);
+					AudioIcSpiCmd(STOP);
+					ReadIntrptAudioIc();
+					lvm_fd=AudioPlayVm(0 , lsdata_to_play);
+					if( lvm_fd )
+					lsvoice_play_state++;
+				}
+			}
+			else
+			{
+				if(*pdata_to_play !=0)
+				{
+					if(ReadStatusAudioIc())
+					{	
+						AudioIcSpiCmd(POWER_UP);
+						AudioIcSpiCmd(STOP);
+						ReadIntrptAudioIc();
+						AudioPlayVp(0 , *pdata_to_play);
+						pdata_to_play++;
+					}
+				}
+				else
+				{
+					lsvoice_play_state++;
+				}
+			}		
+			break;
+		case 2:
+			if(ReadStatusAudioIc())
+			{
+				lsvoice_play_state++;
+        PlayAudioFeedback(PLAYING_STOP);
+			}
+			break;
+			
+		default:
+
+			break;
+	}
+	
+}
+
+/**
+  * @brief  Provide feedback if any voice command is processing
+  * @param  set lfeed_inpt 0 to read status or 0XFE or OXFF to Alter status
+  * @return return 1 if ic buzy or return 0
+  * @note   To play voice this function call contious at approoriate location
+  */
+
+
+uint8_t PlayAudioFeedback(uint8_t lfeed_inpt)
+{
+	static uint8_t lplay_rtn=0;
+	if(lfeed_inpt==PLAYING_STARTED)
+	{
+		lplay_rtn=1;
+	}
+	else if(lfeed_inpt==PLAYING_STOP)
+	{
+		lplay_rtn=0;
+	}
+	return lplay_rtn;
+}
+
+
